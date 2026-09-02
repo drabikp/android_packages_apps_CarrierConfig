@@ -1,6 +1,31 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <carrier_config>
     <boolean name="show_4g_for_lte_data_icon_bool" value="true"/>
+    <!-- IMS. Orange SK (MCC 231 / MNC 01, carrierId 1713) supports VoLTE and
+         VoWiFi; the serving cell advertises LteVopsSupportInfo mVopsSupport=2.
+         Values taken from stock's product/etc/CarrierSettings/s23101spn_3d_orange.pb,
+         which sets carrier_volte_available_bool: 5: 1.
+
+         Without these, ImsManager's carrier half of the gate stays false, IMS
+         voice never registers, and GsmCdmaPhone routes every call with
+         useImsForCall=false. The platform half lives in
+         device/motorola/sm8635-common/overlay/.../values/config.xml; BOTH are
+         required.
+
+         On this device stock's config is normally delivered by the GMS
+         CarrierSettings app plus 3290 .pb files, which LineageOS cannot ship,
+         so it has to be re-expressed here as AOSP CarrierConfig XML. Expect the
+         same gap for every other carrier this device sees.
+
+         NOTE: stock also sets hide_enhanced_4g_lte_bool=true, which hides the
+         VoLTE switch and makes it always-on. That is deliberately NOT copied,
+         so the user keeps a visible, controllable toggle. -->
+    <boolean name="carrier_volte_available_bool" value="true"/>
+    <boolean name="carrier_wfc_ims_available_bool" value="true"/>
+    <boolean name="enhanced_4g_lte_on_by_default_bool" value="true"/>
+    <boolean name="editable_wfc_roaming_mode_bool" value="true"/>
+    <boolean name="carrier_volte_tty_supported_bool" value="false"/>
+    <boolean name="vonr_enabled_bool" value="true"/>
     <string-array name="carrier_certificate_string_array" num="2">
       <item value="b67affcda89e3193b1595036d7c6cdbe22be5ca24c9f6cf93fc6b48f91d7310d:com.orange.phone,com.orange.update"/>
       <item value="6ae20c0e468b99d1f3d35a7cb959ab64cbcee802461ce9d38f099c90d245bfbf:sk.orange.android.orangego"/>
